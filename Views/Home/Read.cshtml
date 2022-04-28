@@ -1,0 +1,50 @@
+﻿@model IDictionary<String, PdfFormField>
+
+@{
+    ViewData["Title"] = "Read PDF Form Values";
+}
+
+<h1>PDF Form Values</h1>
+
+
+<form method="post" id="newForm" enctype="multipart/form-data">
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">PDF File</label>
+        <div class="col-sm-10">
+            <input name="file" type="file" class="form-control">
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">Read</button>
+        </div>
+    </div>
+</form>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Value
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (string key in Model.Keys) {
+        <tr>
+            <td>
+                @key
+            </td>
+            <td>
+                @Model[key].GetValueAsString()
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
