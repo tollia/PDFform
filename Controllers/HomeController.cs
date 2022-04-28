@@ -9,9 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
+using System.Net.Http;
 using System.Net.Mime;
-using System.Threading.Tasks;
 
 namespace PDFform.Controllers
 {
@@ -24,30 +23,42 @@ namespace PDFform.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(
+            string service,
+            string grantor,
+            string grantee,
+            string year
+        )
         {
-            byte[] pdfBytes;
-            using (MemoryStream outStream = new MemoryStream())
-            using (PdfReader reader = new PdfReader(@"./Data/PDFform.pdf"))
-            using (PdfWriter writer = new PdfWriter(outStream))
-            using (PdfDocument pdfDoc = new PdfDocument(reader, writer))
+            if (Request.Method == HttpMethod.Post.Method)
             {
-                PdfAcroForm form = PdfAcroForm.GetAcroForm(pdfDoc, true);
-                IDictionary<String, PdfFormField> fields = form.GetFormFields();
-                fields["service"].SetValue("RSK");
-                fields["service"].SetReadOnly(true);
-                fields["grantor"].SetValue("280467-3409");
-                fields["grantor"].SetReadOnly(true);
-                fields["grantee"].SetValue("700169-3759");
-                fields["grantee"].SetReadOnly(true);
-                fields["year"].SetValue("2021");
-                fields["year"].SetReadOnly(true);
-                //pdfDoc.SetCloseWriter(false);
-                pdfDoc.Close();
-                pdfBytes = outStream.ToArray();
-            }
+                byte[] pdfBytes;
+                using (MemoryStream outStream = new MemoryStream())
+                using (PdfReader reader = new PdfReader(@"./Data/PDFform.pdf"))
+                using (PdfWriter writer = new PdfWriter(outStream))
+                using (PdfDocument pdfDoc = new PdfDocument(reader, writer))
+                {
+                    PdfAcroForm form = PdfAcroForm.GetAcroForm(pdfDoc, true);
+                    IDictionary<String, PdfFormField> fields = form.GetFormFields();
+                    fields["service"].SetValue(service);
+                    fields["service"].SetReadOnly(true);
+                    fields["grantor"].SetValue(grantor);
+                    fields["grantor"].SetReadOnly(true);
+                    fields["grantee"].SetValue(grantee);
+                    fields["grantee"].SetReadOnly(true);
+                    fields["year"].SetValue(year);
+                    fields["year"].SetReadOnly(true);
+                    //pdfDoc.SetCloseWriter(false);
+                    pdfDoc.Close();
+                    pdfBytes = outStream.ToArray();
+                }
 
-            return new FileContentResult(pdfBytes, MediaTypeNames.Application.Pdf);
+                return new FileContentResult(pdfBytes, MediaTypeNames.Application.Pdf);
+            }
+            else
+            {
+                return View();
+            }
         }
 
         public IActionResult Read(IFormFile file)

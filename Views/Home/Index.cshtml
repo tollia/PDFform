@@ -1,8 +1,42 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Generate PDF";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h3>Generate PDF</h3>
+
+<form method="post" id="newForm" enctype="multipart/form-data">
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Service</label>
+        <div class="col-sm-10">
+            <input name="service" type="text" class="form-control">
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Grantor</label>
+        <div class="col-sm-10">
+            <input name="grantor" type="text" class="form-control">
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Grantee</label>
+        <div class="col-sm-10">
+            <input name="grantee" type="text" class="form-control">
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Year</label>
+        <div class="col-sm-10">
+            <input name="year" type="text" class="form-control">
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">Generate</button>
+        </div>
+    </div>
+</form>
+
